@@ -1,6 +1,7 @@
 import { Game } from 'phaser';
 import React from 'react';
 import './App.css';
+import { SceneEvents } from './game/Events';
 import GameScene from './game/GameScene';
 import { GameContainer } from './GameContainer';
 import HUD from './HUD';
@@ -25,11 +26,11 @@ class App extends React.Component {
   render() {
     return(
       <div className='mindsumo-app'>
-        {this.state.game && (
-        <HUD scene={this.state.game?.scene.keys.game as GameScene} onBack={this.back.bind(this)}></HUD>
+        {this.state.game && this.state.activeMode && (
+          <HUD scene={this.state.game?.scene.keys.game as GameScene} onBack={this.back.bind(this)}></HUD>
         )}
         {!this.state.activeMode && (
-          <Splash onModeSelected={this.onModeSelected.bind(this)}></Splash>
+          <Splash scene={this.state.game?.scene.keys.game as GameScene} onModeSelected={this.onModeSelected.bind(this)}></Splash>
         )}
         <GameContainer gameDidStart={this.onGameStarted.bind(this)} ></GameContainer>
 
@@ -37,8 +38,9 @@ class App extends React.Component {
     );
 
   }
+
   back(){
-    this.setState({activeMode:null});
+    this.setState({activeMode:null,gameStarted:false});
     const scene = this.state.game?.scene.keys.game as GameScene;
     scene.clear();
   }
@@ -51,6 +53,9 @@ class App extends React.Component {
   }
   onGameStarted(g:Game){
     this.setState({game:g});
+    g.events.on(SceneEvents.WaveFinished,()=>{
+      this.setState({activeMode:null,gameStarted:false});
+    })
   }
 }
 export default App;

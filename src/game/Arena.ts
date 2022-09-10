@@ -165,8 +165,8 @@ export default class Arena extends Phaser.Physics.Arcade.Sprite {
       super.destroy(false);
       this.arenaBg.destroy();
       this.instruction.destroy();
-      this.scene.events.off("update", () => {
-        this.checkMobs();
-      });
+      // this.scene.events.off("update", () => {
+      //   this.checkMobs();
+      // });
   }
 }

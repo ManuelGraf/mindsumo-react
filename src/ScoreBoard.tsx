@@ -1,6 +1,6 @@
 import React from "react";
+import "./ScoreBoard.css";
 export interface ScoreBoardProps{
-  currentScore:number
 }
 export interface ScoreBoardState{
   savedScores:{score:number,date:number}[]
@@ -12,9 +12,9 @@ export class ScoreBoard extends React.Component<ScoreBoardProps,ScoreBoardState>
 
   render(){
     return (<div className="score-board">
-      <ul>
+      <ul className="scores">
         {this.state.savedScores.map((e, i) => { return(
-          <li className="score-board-item" key={i}>
+          <li className="score-item" key={i}>
             <span>{e.score}</span>
             <span>{new Date(e.date).toISOString()}</span>
           </li>

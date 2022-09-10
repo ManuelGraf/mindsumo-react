@@ -1,21 +1,29 @@
-.in-game .score{
+.in-game{
   position: absolute;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
   font-size: 3rem;
-  top: 5vh;
-  right: 5vh;
+  width: 100%;
+  top:0;
+  left:0;
   font-family: 'GoodBrush';
-  color: white;
-}
-.in-game .back{
-  cursor: pointer;
-  position: absolute;
-  font-size: 3rem;
-  top: 5vh;
-  left: 5vh;
-  font-family: 'GoodBrush';
-  background: white;
+  
 }
 
+.in-game .score{
+  justify-self: flex-end;
+  color: white;
+  margin:5vh;
+}
+.in-game .back{
+  font-size: 3rem;
+  margin:5vh;
+  font-family: 'GoodBrush';
+  justify-self: flex-start;
+  cursor: pointer;
+  background: white;
+}
 
 .score-screen{
   position: absolute;

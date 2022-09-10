@@ -103,7 +103,6 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
     return this;
   }
   onMobCollided(mob: Mob) {
-    let pos = new Phaser.Math.Vector2(mob.x - this.x, mob.y - this.y);
     mob.stun(1)
     this.hitSounds.play();
     console.log("collided", mob);
