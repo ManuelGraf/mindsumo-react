@@ -36,7 +36,7 @@ class App extends React.Component {
   }
   onModeSelected(mode){
     if(this.state.game){
-      let scene = this.state.game.scene.getScenes()[1] as GameScene;
+      let scene = this.state.game.scene.keys.game as GameScene;
       scene.startMode(mode);
     }
   }
