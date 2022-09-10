@@ -2,14 +2,12 @@ import Arena, { ArenaType } from "./Arena";
 import { ArenaColor } from "./ArenaColor";
 import { Helper } from "./Helper";
 import Inputs from "./Inputs";
-import { Score } from "./Score";
 import Sumo from "./Sumo";
 
 export default class GameScene extends Phaser.Scene {
   private _inputs: Inputs;
   arena: Arena;
   sumo;
-  score;
 
   constructor() {
     super({
@@ -30,13 +28,8 @@ export default class GameScene extends Phaser.Scene {
     this._inputs = new Inputs(this);
 
     let dim = Helper.screenDimensions;
-    const size = Math.min(dim.x, dim.y);
-    const portrait = dim.x < dim.y;
-    console.log(Helper.screenDimensions, dim.x / 2, dim.y / 2);
-    // this.arena = new ArenaColor(this, size / 10, size / 2);
+    
     this.sumo = new Sumo(this, 0, 0);
-    this.score = new Score(this);
-    this.add.existing(this.score);
     // this.physics.add.collider(this.sumo, this.arena);
     // const { widthInPixels, heightInPixels } = tilemap;
 
@@ -75,6 +68,7 @@ export default class GameScene extends Phaser.Scene {
     // );
     // this.objects = {};
   }
+  
   startMode(mode){
     let dim = Helper.screenDimensions;
     const size = Math.min(dim.x, dim.y);
@@ -82,10 +76,16 @@ export default class GameScene extends Phaser.Scene {
     switch(mode){
       case ArenaType.Color:
         this.arena = new ArenaColor(this, size / 10, size / 2);
-
-    }
+        break;
+      }
+      this.sumo.setDepth(100);
+      this.arena.startWave(1,5000);
   }
 
+  clear(){
+    this.events.emit('clearScore');
+    this.arena.destroy(true);
+  }
   public get inputs() {
     return this._inputs;
   }

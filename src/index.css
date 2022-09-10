@@ -1,6 +1,15 @@
+*{
+  box-sizing: border-box;
+}
+@font-face {
+  font-family: "GoodBrush";
+  src: url(../public/assets/fonts/GoodBrush.ttf);
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  overflow:hidden;
+  font-family: 'GoodBrush',-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;

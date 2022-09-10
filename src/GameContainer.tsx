@@ -7,6 +7,9 @@ export class GameContainer extends React.Component{
   props:{
     gameDidStart: (g:Game)=>void
   }
+  constructor(props){
+    super(props);
+  }
   render(){
     return <div id="#game"></div>
   }

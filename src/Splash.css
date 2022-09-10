@@ -1,9 +1,50 @@
 .splash{
   --text-color: #333;
+  position:absolute;
+  width:100vw;
+  height:100vh;
   background:white;
   color: var(--text-color);
+  background-image: url(../public/assets/images/sumo.svg);
+  background-repeat: no-repeat;
+  background-position: -10vh center;
+  background-size: auto 100vh;
+}
+.intro{
+  display:flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-end;
+  margin:10vh 10vw
+
+}
+.intro__title{
+  font-family:'GoodBrush';
+  font-size: 25vh;
+}
+.button{
+  cursor: pointer;
+  padding: 1vh 10vw 10vh;
+  font-family:'GoodBrush';
+  font-size: 8vh;
+  display:flex;
+  position:relative;
+  align-items: center;
+  /* justify-content: flex-start; */
+  border:none;
+  outline:none;
+  background-color:transparent;
+  background-size: 100% 100%;
+  background: url(../public/assets/images/btn.svg) top center no-repeat
+  
 }
 .mode-select{
+  display:flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-end;
+  margin:10vh 10vw
+
   
 }
 .start-game{

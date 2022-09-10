@@ -21,18 +21,21 @@ export class ArenaColor extends Arena{
   // }
   startWave(count,interval){
     const circle = new Phaser.Geom.Circle(this.killRadius, this.killRadius*0.9,this.killRadius*0.9);
-    this.scene.time.addEvent({
+    let waveTimer = this.scene.time.addEvent({
       delay: interval,// ms
       callback: (d)=>{
-        console.log('wave spawn')
+        console.log('wave spawn',waveTimer.getOverallProgress());
         let m = new Mob(this.scene,this.colors[Helper.randomIntFromInterval(0,this.colors.length-1)]);
         this.spawnMob(m);
         Phaser.Actions.PlaceOnCircle([m], circle,Phaser.Math.Between(0,360));
+        
+        if(waveTimer.getOverallProgress() === 1){
+          this.isWaveComplete = true;
+        }
       },
       callbackScope: this,
       repeat: count,
     });
-
   }
 
 }

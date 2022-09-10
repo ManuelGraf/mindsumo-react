@@ -1,3 +1,4 @@
+import { SceneEvents } from "./Events";
 import GameScene from "./GameScene";
 import { Helper } from "./Helper";
 import { Mob } from "./Mob";
@@ -19,6 +20,7 @@ export default class Arena extends Phaser.Physics.Arcade.Sprite {
   arenaBg: Phaser.GameObjects.Image;
   label:string;
   currentScore:number =0;
+  isWaveComplete=false;
  
   pool: Mob[] = [];
 
@@ -106,17 +108,20 @@ export default class Arena extends Phaser.Physics.Arcade.Sprite {
   killMob(mob: Mob) {
     this.mobs.remove(mob, true, false);
     mob.kill();
+    if(this.mobs.getChildren().length === 0 && this.isWaveComplete ){
+      this.scene.events.emit(SceneEvents.WaveFinished);
+    }
   }
   isMobValueCorrect(m:Mob):boolean{return false}
   startWave(count:number,interval:number):void{}
   score(mob:Mob){
-    this.scene.events.emit('scored');
+    this.scene.events.emit(SceneEvents.Score);
     //@TODO make dynamic from mob value/weight
     this.currentScore++; 
   }
   leak(mob:Mob){
     this.currentScore--;
-    this.scene.events.emit('leaked');
+    this.scene.events.emit(SceneEvents.Leak);
   }
 
   public setSize(size: number) {
@@ -132,7 +137,7 @@ export default class Arena extends Phaser.Physics.Arcade.Sprite {
       // this.scene.physics.add.collider(mob, this, (m) => {
       //   this.isMobValueCorrect(m as Mob);
       // });
-      this.scene.events.emit("mobSpawned", mob);
+      this.scene.events.emit(SceneEvents.MobSpawned, mob);
       return mob;
     }
     // const mob = new Mob(this.scene, pos.x, pos.y);
@@ -155,5 +160,13 @@ export default class Arena extends Phaser.Physics.Arcade.Sprite {
       // this.spawnMob(mob);
       // console.log("spawned", mob);
     });
+  }
+  public destroy(fromScene?: boolean | undefined): void {
+      super.destroy(false);
+      this.arenaBg.destroy();
+      this.instruction.destroy();
+      this.scene.events.off("update", () => {
+        this.checkMobs();
+      });
   }
 }

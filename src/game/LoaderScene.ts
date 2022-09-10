@@ -9,8 +9,8 @@ export default class LoaderScene extends Phaser.Scene {
       url: "./assets/images/arena.svg",
       key: "arena",
       svgConfig: {
-        width: 4096,
-        height: 4096,
+        width: 2048,
+        height: 2048,
       },
     });
     this.load.svg({

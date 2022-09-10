@@ -1,0 +1,30 @@
+.in-game .score{
+  position: absolute;
+  font-size: 3rem;
+  top: 5vh;
+  right: 5vh;
+  font-family: 'GoodBrush';
+  color: white;
+}
+.in-game .back{
+  cursor: pointer;
+  position: absolute;
+  font-size: 3rem;
+  top: 5vh;
+  left: 5vh;
+  font-family: 'GoodBrush';
+  background: white;
+}
+
+
+.score-screen{
+  position: absolute;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+.score-screen-score{
+  font-size: 25vh;
+  flex: 1 1 50%
+}

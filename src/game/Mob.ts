@@ -36,6 +36,7 @@ export class Mob extends Phaser.Physics.Arcade.Sprite {
     const weight = baseWeight
     
     super(scene,size/2,size/2, texture);
+    this.scene = scene;
     this.value = value;
     this.speed = speed;
     this.weight = weight;

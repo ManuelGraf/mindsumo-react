@@ -13,6 +13,7 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
   weight = 1;
   size = 64;
   hitSounds:SoundQueue
+  public body:any;
 
   constructor(scene: GameScene, x: number, y: number) {
     const texture = "sumo";
@@ -47,13 +48,13 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
       });
     });
     
-    // this.body.setAllowDrag(true).setMaxVelocityX(160);
-    // this.body.setAllowDrag(true).setMaxVelocityY(160);
+    this.body.setAllowDrag(true).setMaxVelocityX(160);
+    this.body.setAllowDrag(true).setMaxVelocityY(160);
     
     this.setSize(this.size).setDisplaySize(this.size,this.size)
     .setCollideWorldBounds(true)
-    .setDragX(Math.pow(16, 2))
-    .setDragY(Math.pow(16, 2))
+    .setDragX(Math.pow(25, 2))
+    .setDragY(Math.pow(25, 2))
     .setState(States.STANDING);
     this.body.setCircle(this.size);
   }
