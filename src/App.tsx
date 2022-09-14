@@ -1,15 +1,13 @@
-import { Game } from 'phaser';
 import React from 'react';
 import './App.css';
-import { SceneEvents } from './game/Events';
 import GameScene from './game/GameScene';
+import PhaserGame from './game/PhaserGame';
 import { GameContainer } from './GameContainer';
 import HUD from './HUD';
 import { Splash } from './Splash';
-
 class App extends React.Component {
   state: {
-    game:Game|null,
+    game:PhaserGame|null,
     gameStarted: boolean,
     activeMode:string|null
   }
@@ -26,17 +24,19 @@ class App extends React.Component {
   render() {
     return(
       <div className='mindsumo-app'>
-        {this.state.game && this.state.activeMode && (
-          <HUD scene={this.state.game?.scene.keys.game as GameScene} onBack={this.back.bind(this)}></HUD>
-        )}
-        {!this.state.activeMode && (
-          <Splash scene={this.state.game?.scene.keys.game as GameScene} onModeSelected={this.onModeSelected.bind(this)}></Splash>
-        )}
+          <div className={(this.state.game && this.state.activeMode ? "": "hidden")}>
+            <HUD  game={this.state.game} onBack={this.back.bind(this)}></HUD>
+          </div>
+          <div className={(!this.state.activeMode ? "": "hidden")}>
+            <Splash game={this.state.game} onModeSelected={this.onModeSelected.bind(this)}></Splash>
+          </div>
         <GameContainer gameDidStart={this.onGameStarted.bind(this)} ></GameContainer>
-
       </div>
     );
 
+  }
+  componentDidMount(){
+    console.log('app mounted')
   }
 
   back(){
@@ -45,17 +45,13 @@ class App extends React.Component {
     scene.clear();
   }
   onModeSelected(mode){
-    this.setState({activeMode:mode});
-    if(this.state.game){
-      let scene = this.state.game.scene.keys.game as GameScene;
-      scene.startMode(mode);
-    }
+    this.setState({activeMode:mode,gameStarted:true});
   }
-  onGameStarted(g:Game){
-    this.setState({game:g});
-    g.events.on(SceneEvents.WaveFinished,()=>{
-      this.setState({activeMode:null,gameStarted:false});
-    })
+  onGameStarted(game:PhaserGame){
+    if(game){
+      console.log('game created',game,JSON.stringify(game.scene.keys));
+      this.setState({game});
+    }
   }
 }
 export default App;

@@ -21,6 +21,8 @@ export default class Arena extends Phaser.Physics.Arcade.Sprite {
   label:string;
   currentScore:number =0;
   isWaveComplete=false;
+  waveTimer:Phaser.Time.TimerEvent;
+
  
   pool: Mob[] = [];
 
@@ -115,13 +117,15 @@ export default class Arena extends Phaser.Physics.Arcade.Sprite {
   isMobValueCorrect(m:Mob):boolean{return false}
   startWave(count:number,interval:number):void{}
   score(mob:Mob){
-    this.scene.events.emit(SceneEvents.Score);
-    //@TODO make dynamic from mob value/weight
+    console.log('scored!')
     this.currentScore++; 
+    this.scene.events.emit(SceneEvents.Score,this.currentScore);
+    //@TODO make dynamic from mob value/weight
   }
   leak(mob:Mob){
+    console.log('leaked!')
     this.currentScore--;
-    this.scene.events.emit(SceneEvents.Leak);
+    this.scene.events.emit(SceneEvents.Leak,this.currentScore);
   }
 
   public setSize(size: number) {
@@ -162,7 +166,9 @@ export default class Arena extends Phaser.Physics.Arcade.Sprite {
     });
   }
   public destroy(fromScene?: boolean | undefined): void {
-      super.destroy(false);
+      super.destroy(fromScene);
+      this.waveTimer.remove();
+
       this.arenaBg.destroy();
       this.instruction.destroy();
       // this.scene.events.off("update", () => {

@@ -110,7 +110,6 @@ export class Mob extends Phaser.Physics.Arcade.Sprite {
     return this;
   }
   stun(duration) {
-    console.log("stun mob for ", duration);
     this.stunned = true;
     this.stunUntil = this.scene.time.now + duration * 1000;
     return this;

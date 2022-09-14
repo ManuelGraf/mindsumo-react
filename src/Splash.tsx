@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArenaType } from './game/Arena';
 import { SceneEvents } from './game/Events';
-import GameScene from './game/GameScene';
+import PhaserGame from './game/PhaserGame';
 import ScoreBoard from './ScoreBoard';
 import './Splash.css';
 import StorageService from './StorageService';
@@ -15,7 +15,7 @@ export class Splash extends React.Component {
     isVisibleScores: boolean,
   }>;  
   props: {
-    scene: GameScene|null,
+    game: PhaserGame|null,
     onModeSelected: (type: string) => void;
   };
   constructor(props) {
@@ -50,6 +50,7 @@ export class Splash extends React.Component {
         <div className="score-screen">
           <p className="score-screen__score">Your Score: {this.state.currentScore}</p>
           <ScoreBoard/>
+          <button className="button"> select mode</button>
         </div>
       )}
 
@@ -75,10 +76,14 @@ export class Splash extends React.Component {
           mode:type,
           isVisibleModeSelect: false,
         })
+        this.props.game?.gameScene.startMode(type);
+
   }
   componentDidUpdate(prevProps){
-    if(prevProps.scene !== this.props.scene){
-      this.props.scene?.events.on(SceneEvents.WaveFinished,this.onWaveFinished.bind(this))
+    console.log('update',prevProps)
+    if(prevProps.game && prevProps.game !== this.props.game){
+  
+      this.props.game?.gameScene?.events.on(SceneEvents.WaveFinished,this.onWaveFinished.bind(this))
     }
   }
   onWaveFinished(score){
@@ -88,6 +93,13 @@ export class Splash extends React.Component {
       isVisibleScores:true,
       isVisibleStart:false,
       currentScore:score
+    })
+  }
+  resume(){
+    this.setState({
+      isVisibleModeSelect:true,
+      isVisibleScores:false,
+      isVisibleStart:false,
     })
   }
 }

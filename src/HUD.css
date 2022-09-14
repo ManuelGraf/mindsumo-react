@@ -1,12 +1,14 @@
-.in-game{
+.hud{
   position: absolute;
+  width: 100%;
+  top:0;
+  left:0;
+}
+.in-game{
   display:flex;
   justify-content: space-between;
   align-items: center;
   font-size: 3rem;
-  width: 100%;
-  top:0;
-  left:0;
   font-family: 'GoodBrush';
   
 }

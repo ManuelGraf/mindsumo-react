@@ -1,22 +1,34 @@
-import { Game } from "phaser";
 import React from "react";
 
-import phaserGame from './game/PhaserGame';
+import PhaserGame from './game/PhaserGame';
 export interface GameContainerProps{
-  gameDidStart: (g:Game)=>void
+  gameDidStart: (g:PhaserGame)=>void
 }
 export interface GameContainerState{
-  game:Game
+  game:PhaserGame|null
 }
 
 export class GameContainer extends React.Component<GameContainerProps,GameContainerState>{
+  game:PhaserGame;
+  constructor(props){
+    super(props);
+    console.log('make game');
+    this.state = {
+      game:new PhaserGame()
+    }
+  }
   render(){
-    return <div id="#game"></div>
+    return <div id="game"></div>
   }
   componentDidMount(){
-    const game = phaserGame;
-    this.setState({game})
-    this.props.gameDidStart(game);
+    if(this.state.game){
+      console.log('game container mounted')
+      this.props.gameDidStart(this.state.game);
+    }
+  }
+  componentWillUnmount(){
+    console.log('destroy game')
+    this.state.game?.destroy(true);
   }
 }
 export default GameContainer

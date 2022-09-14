@@ -105,6 +105,5 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
   onMobCollided(mob: Mob) {
     mob.stun(1)
     this.hitSounds.play();
-    console.log("collided", mob);
   }
 }

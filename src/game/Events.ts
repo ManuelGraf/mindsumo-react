@@ -3,5 +3,6 @@ export enum SceneEvents{
   Score='scored',
   Leak='leaked',
   ScoreCleared='scoreCleared',
-  WaveFinished='waveFinish'
+  WaveFinished='waveFinish',
+  WaveStarted='waveStart'
 }

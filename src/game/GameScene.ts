@@ -1,5 +1,6 @@
 import Arena, { ArenaType } from "./Arena";
 import { ArenaColor } from "./ArenaColor";
+import { SceneEvents } from "./Events";
 import { Helper } from "./Helper";
 import Inputs from "./Inputs";
 import Sumo from "./Sumo";
@@ -8,6 +9,7 @@ export default class GameScene extends Phaser.Scene {
   private _inputs: Inputs;
   arena: Arena;
   sumo;
+  score:0;
 
   constructor() {
     super({
@@ -52,6 +54,9 @@ export default class GameScene extends Phaser.Scene {
       dim.x,
       dim.y,
     );
+
+    this.events.on(SceneEvents.Score,this.onScored.bind(this))
+    this.events.on(SceneEvents.Leak,this.onLeaked.bind(this))
     
     // this.sound.play('music',{volume:0.2});
     // this.physics.world.TILE_BIAS = 8;
@@ -68,8 +73,16 @@ export default class GameScene extends Phaser.Scene {
     // );
     // this.objects = {};
   }
+
+  onScored(){
+    this.score++;
+  }
+  onLeaked(){
+    this.score--;
+  }
   
-  startMode(mode){
+  startMode(mode, count=1){
+    this.score = 0;
     let dim = Helper.screenDimensions;
     const size = Math.min(dim.x, dim.y);
 
@@ -79,7 +92,8 @@ export default class GameScene extends Phaser.Scene {
         break;
       }
       this.sumo.setDepth(100);
-      this.arena.startWave(1,5000);
+      this.arena.startWave(count,5000);
+      this.events.emit(SceneEvents.WaveStarted,{count,mode})
   }
 
   clear(){
