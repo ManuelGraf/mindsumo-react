@@ -3,18 +3,16 @@ import { Helper } from "./Helper";
 import { Mob } from "./Mob";
 
 export class ArenaMultiply extends Arena{
-  correct:number[] = [];
+  correct:number;
 
   constructor(scene,interactionRadius,killRadius){
     super(scene,interactionRadius,killRadius);
-    this.correct.push(Helper.randomIntFromInterval(2,10));
-    this.instruction.setText('Multiples of: \n'+this.correct.join('x '))
+    this.correct =Helper.randomIntFromInterval(2,10);
+    this.instruction.setText('Multiples of: \n'+this.correct)
   }
   isMobValueCorrect(m:Mob){
-    let correct = false;
-    for (const c of this.correct) {
-      correct = correct || c %m.value === 0;
-    }
+    let correct = m.value % this.correct === 0;
+    console.log('correct %s, %s % %s = %s',correct,m.value, this.correct,  m.value % this.correct)
     return correct;
   }
   // spawnMob() {

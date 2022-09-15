@@ -22,8 +22,8 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
     this.scene = scene;
     
     Object.entries({
-      push: { frameRate: 12, frames: [0, 1], repeat: -1 },
-      walk: { frameRate: 12, frames: [2, 3], repeat: -1 },
+      push: { frameRate: 6, frames: [0, 1], repeat: -1 },
+      walk: { frameRate: 6, frames: [2, 3], repeat: -1 },
       stand: { frames: [0] },
     }).forEach(([key, data]) => {
       const { frameRate, frames, repeat } = data;
@@ -64,7 +64,9 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
   }
 
   public setState(value: States) {
-    this.play(value)
+    if(this.state !== value){
+      this.play(value)
+    }
 
     return super.setState(value);
   }
@@ -79,8 +81,10 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
     this.setFlipX(flipX)
     .setAccelerationX(accelerationX)
     .setAccelerationY(accelerationY);
-    if(accelerationX > 0 || accelerationY > 0 ){
+    if(left || right || down || up ){
       this.setState(States.WALKING)
+    }else{
+      this.setState(States.STANDING)
     }
     console.log(this.state);
     super.preUpdate(time, delta);
