@@ -7,7 +7,7 @@ export class ArenaMultiply extends Arena{
 
   constructor(scene,interactionRadius,killRadius){
     super(scene,interactionRadius,killRadius);
-    this.correct.push(Helper.randomIntFromInterval(0,10));
+    this.correct.push(Helper.randomIntFromInterval(2,10));
     this.instruction.setText('Multiples of: \n'+this.correct.join('x '))
   }
   isMobValueCorrect(m:Mob){

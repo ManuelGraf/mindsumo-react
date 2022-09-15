@@ -27,7 +27,7 @@ export default class GameScene extends Phaser.Scene {
 
     let dim = Helper.screenDimensions;
     
-    this.sumo = new Sumo(this, 0, 0);
+    this.sumo = new Sumo(this, dim.x/2, dim.y/2);
 
     this.physics.world.setBounds(
       0,0,

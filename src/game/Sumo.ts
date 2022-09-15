@@ -10,8 +10,9 @@ enum States {
 
 export default class Sumo extends Phaser.Physics.Arcade.Sprite {
   public scene: GameScene;
-  weight = 1;
-  size = 64;
+  weight = 1.5;
+  size = 128;
+  texSize=128;
   hitSounds:SoundQueue
   public body:any;
 
@@ -20,43 +21,48 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
 
     super(scene, x, y, texture);
     this.scene = scene;
-    this.hitSounds= new SoundQueue(this.scene.sound);
-    this.hitSounds.set(['oomph1','oomph2','oomph3']);
-
-    // Object.entries({
-    //   fight: { frames: [0] },
-    //   walk: { frameRate: 12, frames: [1, 2, 0], repeat: -1 },
-    //   jump: { frames: [2] },
-    //   crouch: { frames: [3] },
-    // }).forEach(([key, data]) => {
-    //   const { frameRate, frames, repeat } = data;
-
-    //   this.scene.anims.create({
-    //     key,
-    //     frameRate,
-    //     repeat,
-    //     frames: this.scene.anims.generateFrameNumbers(texture, { frames }),
-    //   });
-    // });
-    this.scene.add.existing(this);
-    this.scene.physics.world.enable(this);
-    this.setMass(this.weight);
     
+    Object.entries({
+      pushing: { frameRate: 12, frames: [0, 1], repeat: -1 },
+      walking: { frameRate: 12, frames: [2, 3], repeat: -1 },
+      standing: { frames: [0] },
+    }).forEach(([key, data]) => {
+      const { frameRate, frames, repeat } = data;
+
+      this.scene.anims.create({
+        key,
+        frameRate,
+        repeat,
+        frames: this.scene.anims.generateFrameNumbers(texture, { frames }),
+      });
+    });
+    
+    
+    this.scene.physics.world.enable(this);
+    this.body
+    .setCircle(this.texSize/2)
+    .setMass(this.weight)
+    .setAllowDrag(true)
+    .setMaxVelocityX(180)
+    .setMaxVelocityY(180)
+      .setDragX(Math.pow(25, 2))
+      .setDragY(Math.pow(25, 2));
+      
+      this.scene.add.existing(this)
+      .setDisplaySize(this.size,this.size)
+      .setOrigin(0.5)
+      .setCollideWorldBounds(true)
+      .setState(States.STANDING);
+      
     this.scene.events.on("mobSpawned", (mob:Mob) => {
       scene.physics.add.collider(this, mob, (c) => {
         this.onMobCollided(mob);
       });
     });
+    this.hitSounds= new SoundQueue(this.scene.sound);
+    this.hitSounds.set(['oomph1','oomph2','oomph3']);
     
-    this.body.setAllowDrag(true).setMaxVelocityX(160);
-    this.body.setAllowDrag(true).setMaxVelocityY(160);
     
-    this.setSize(this.size).setDisplaySize(this.size,this.size)
-    .setCollideWorldBounds(true)
-    .setDragX(Math.pow(25, 2))
-    .setDragY(Math.pow(25, 2))
-    .setState(States.STANDING);
-    this.body.setCircle(this.size);
   }
 
   public setState(value: States) {
@@ -81,8 +87,12 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
     const directionY = -Number(up) + Number(down);
     const accelerationX = directionX * Math.pow(16, 2);
     const accelerationY = directionY * Math.pow(16, 2);
-    this.setFlipX(flipX).setAccelerationX(accelerationX);
-    this.setAccelerationY(accelerationY);
+    this.setFlipX(flipX)
+    .setAccelerationX(accelerationX)
+    .setAccelerationY(accelerationY);
+    if(accelerationX > 0 || accelerationY > 0 ){
+      this.setState(States.WALKING)
+    }
 
     super.preUpdate(time, delta);
   }
@@ -103,6 +113,7 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
     return this;
   }
   onMobCollided(mob: Mob) {
+    this.setState(States.PUSHING)
     mob.stun(1)
     this.hitSounds.play();
   }

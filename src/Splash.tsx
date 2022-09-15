@@ -81,7 +81,7 @@ export class Splash extends React.Component {
           mode:type,
           isVisibleModeSelect: false,
         })
-        this.props.scene?.startMode(type);
+        this.props.scene?.startMode(type,50);
 
   }
   componentDidUpdate(prevProps){

@@ -29,29 +29,48 @@ export default class LoaderScene extends Phaser.Scene {
         height: 128,
       },
     });
-    // this.load.svg('sumoSheet','./assets/images/sumo-ani.svg');
+    this.load.svg('sumo-ani','./assets/images/sumo-ani.svg');
     this.load.svg({
       url: "./assets/images/sumo.svg",
       key: "sumo",
       svgConfig: {
-        width: 100,
-        height: 100,
+        width: 128,
+        height: 128,
       },
     });
+    this.load.svg({
+      url: "./assets/images/sumo-ani.svg",
+      key: "sumo-ani",
+      svgConfig: {
+        width: 512,
+        height: 128,
+      },
+    })
+    // this.textures.on(Phaser.Textures.Events.ADD,(key,tex)=>{
+    //   console.log('added tex')
+    //   if(key==='sumo-ani'){
+    //     Parser.SpriteSheet(texture, 0, 0, 0, width, height, config);
+    //   }
+    // })
     this.load.image("paper", "./assets/images/paper.jpg");
     this.load.audio("oomph1", "./assets/audio/sumo-oomph-1.mp3");
     this.load.audio("oomph2", "./assets/audio/sumo-oomph-2.mp3");
     this.load.audio("oomph3", "./assets/audio/sumo-oomph-3.mp3");
     this.load.audio("music", ["./assets/audio/keys-of-moon-yugen.mp3"]);
-    // this.load.spritesheet("player", "./assets/images/sumi-ani.svg", {
-    //   frameWidth: 16,
-    //   frameHeight: 32,
+    // this.load.spritesheet("sumo-ani", "./assets/images/sumi-ani.svg", {
+    //   frameWidth: 128,
+    //   frameHeight: 128,
+    //   endFrame:3
     // });
+    // this.textures.addSpriteSheet('sumo-ani-sheet',null,{
+    //     frameWidth: 128,
+    //     frameHeight: 128,
+    //     endFrame:3
+    //   })
   }
 
   public create() {
     this.scene.start("game");
-    this.sound.play('music',{volume:0.2})
-
+    this.sound.play('music',{volume:0.2,loop:true})
   }
 }

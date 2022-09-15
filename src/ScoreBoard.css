@@ -1,8 +1,12 @@
 .score-board{
   font-family: 'GoodBrush';
-  font-size: 1rem;
+  font-size: 1.5rem;
+  height:100%;
+  overflow-y: scroll;
 }
-.scores{}
+.scores{
+  /* overflow-y: auto; */
+}
 .score-item{
   display:flex;
   justify-content: space-between;
