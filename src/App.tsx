@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import { GameEvents } from './game/Events';
 import GameScene from './game/GameScene';
 import PhaserGame from './game/PhaserGame';
 import { GameContainer } from './GameContainer';
@@ -8,6 +9,7 @@ import { Splash } from './Splash';
 class App extends React.Component {
   state: {
     game:PhaserGame|null,
+    scene:GameScene|null,
     gameStarted: boolean,
     activeMode:string|null
   }
@@ -16,6 +18,7 @@ class App extends React.Component {
     super(props);
     this.state={
       game:null,
+      scene:null,
       gameStarted:false,
       activeMode:null
     }
@@ -25,11 +28,9 @@ class App extends React.Component {
     return(
       <div className='mindsumo-app'>
           <div className={(this.state.game && this.state.activeMode ? "": "hidden")}>
-            <HUD  game={this.state.game} onBack={this.back.bind(this)}></HUD>
+            <HUD scene={this.state.scene} onBack={this.back.bind(this)}></HUD>
           </div>
-          <div className={(!this.state.activeMode ? "": "hidden")}>
-            <Splash game={this.state.game} onModeSelected={this.onModeSelected.bind(this)}></Splash>
-          </div>
+        <Splash scene={this.state.scene} onModeSelected={this.onModeSelected.bind(this)}></Splash>
         <GameContainer gameDidStart={this.onGameStarted.bind(this)} ></GameContainer>
       </div>
     );
@@ -51,6 +52,10 @@ class App extends React.Component {
     if(game){
       console.log('game created',game,JSON.stringify(game.scene.keys));
       this.setState({game});
+      game.events.on(GameEvents.sceneReady,(scene)=>{
+        this.setState({scene});
+
+      })
     }
   }
 }

@@ -39,6 +39,11 @@ export class PhaserGame extends Phaser.Game{
     
     super(config);
   }
+  onSceneReady(){
+    return new Promise((resolve,reject)=>{
+
+    })
+  }
   get gameScene():GameScene{
     return this.scene.keys.game as GameScene
   }

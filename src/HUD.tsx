@@ -1,15 +1,15 @@
 import React from "react";
 import { ArenaType } from "./game/Arena";
 import { SceneEvents } from "./game/Events";
-import PhaserGame from "./game/PhaserGame";
+import GameScene from "./game/GameScene";
 import './HUD.css';
 export interface HUDProps{
-  game:PhaserGame|null,
+  scene:GameScene|null,
   onBack: ()=>void
-  onFinishScore?: (score:number)=>void
 }
 export interface HUDState{
-  score:number
+  scored:boolean,
+  leaked:boolean,
   finished:boolean
   mobCount:number,
   mode:ArenaType|null,
@@ -18,7 +18,8 @@ export interface HUDState{
 export class HUD extends React.Component<HUDProps,HUDState>{
   state: HUDState = {
     registered:false,
-    score: 0,
+    scored: false,
+    leaked: false,
     finished:false,
     mobCount:0,
     mode:null
@@ -29,7 +30,8 @@ export class HUD extends React.Component<HUDProps,HUDState>{
       {!this.state.finished && (
         <div className="in-game">
           <button onClick={this.back.bind(this)} className="back">BACK</button>
-          <span className="score">Score: {this.props.game?.gameScene?.score}</span>
+          <span className="score">Wave: {this.props.scene?.mobCount}</span>
+          <span className="score">Score: {this.props.scene?.score}</span>
         </div>
       )}
     </div>)
@@ -41,27 +43,25 @@ export class HUD extends React.Component<HUDProps,HUDState>{
     console.log('will update hud')
   }
   componentDidUpdate(prevProps){
-    console.log('change',prevProps,this.props)
-    if(this.props.game && !prevProps.game){
-      console.log('scene changed',this.props.game.gameScene);
-      this.props.game?.gameScene?.events.on(SceneEvents.Score,this.onScored.bind(this))
-      this.props.game?.gameScene?.events.on(SceneEvents.Leak,this.onLeaked.bind(this))
-      this.props.game?.gameScene?.events.on(SceneEvents.WaveFinished,this.onFinish.bind(this))
-      this.props.game?.gameScene?.events.on(SceneEvents.WaveStarted,this.onWaveStarted.bind(this))
+    if(this.props.scene && !prevProps.scene){
+      console.log('scene changed',this.props.scene);
+      this.props.scene.events.on(SceneEvents.Score,this.onScored.bind(this))
+      this.props.scene.events.on(SceneEvents.Leak,this.onLeaked.bind(this))
       this.setState({registered:true});
       }
     }
   componentWillUnmount(){
-    if(this.props.game){
-      this.props.game?.gameScene?.events.off(SceneEvents.Score,this.onScored.bind(this))
-      this.props.game?.gameScene?.events.off(SceneEvents.Leak,this.onLeaked.bind(this))
-      this.props.game?.gameScene?.events.off(SceneEvents.WaveFinished,this.onFinish.bind(this))
-      this.props.game?.gameScene?.events.off(SceneEvents.WaveStarted,this.onWaveStarted.bind(this)) 
+    if(this.props.scene){
+      this.props.scene?.events.off(SceneEvents.Score,this.onScored.bind(this))
+      this.props.scene?.events.off(SceneEvents.Leak,this.onLeaked.bind(this))
     }
   }
   onScored(){
     console.log('hud scored');
-    this.increment('score');
+    this.setState({scored:true})
+    setTimeout(()=>{
+      this.setState({scored:false})
+    },1000);
   }
   increment(key){
     this.setState((prevState,props)=>{
@@ -78,16 +78,11 @@ export class HUD extends React.Component<HUDProps,HUDState>{
     })
   }
   onLeaked(){
-    this.decrement('score');
-  }
-  onFinish(){
-    if(this.props.onFinishScore){
-      this.setState({finished:true});
-      this.props.onFinishScore(this.state.score)  
-    }
-  }
-  onWaveStarted({count,mode}){
-    this.setState({finished:false,mobCount:count,mode});
+    this.setState({leaked:true})
+    setTimeout(()=>{
+      this.setState({leaked:false})
+    },1000);
+
   }
 }
 export default HUD;

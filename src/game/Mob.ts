@@ -20,20 +20,16 @@ export class Mob extends Phaser.Physics.Arcade.Sprite {
   
   constructor(scene: GameScene, value:any) {
     const texture = "btn-circle";
-    const baseSize = 64;
-    const baseSpeed = 20;
-    const baseWeight = 0.5;
-    // const maxSize = 128;
-    // const minSpeed = 20;
-    // const maxWeight = 1;
+    const maxSize = 128;
+    const maxSpeed = 30;
+    const maxWeight = 1;
+    const minSize = 32;
+    const minSpeed = 10;
+    const minWeight = 0.3;
     
-    // const size = Phaser.Math.Between(baseSize,maxSize);
-    // const speed = Phaser.Math.Interpolation.Linear([minSpeed,baseSpeed],size/maxSize);
-    // const weight = Phaser.Math.Interpolation.Linear([baseWeight,maxWeight],size/maxSize)
-
-    const size = baseSize;
-    const speed = baseSpeed;
-    const weight = baseWeight
+    const size = Phaser.Math.Between(maxSize,minSize);
+    const speed = Phaser.Math.Interpolation.Linear([minSpeed,maxSpeed],maxSize/size);
+    const weight = Phaser.Math.Interpolation.Linear([minWeight,maxWeight],size/maxSize)
     
     super(scene,size/2,size/2, texture);
     this.scene = scene;
@@ -54,7 +50,7 @@ export class Mob extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.enable(this);
     // .setOrigin(0.5)
     this.body
-      .setCircle(size)
+      .setCircle(maxSize/2)
       .setMass(this.weight)
       .setBounce(1,1)
       .setAllowDrag(true)
@@ -65,7 +61,6 @@ export class Mob extends Phaser.Physics.Arcade.Sprite {
       this.body.moves = true;
       
       this.scene.add.existing(this)
-      // .setSize(this.size).setCircle(this.size)
       .setDisplaySize(this.size, this.size)
 
     // this.setSize(this.size).setCircle(this.size);

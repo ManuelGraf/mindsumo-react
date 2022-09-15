@@ -17,6 +17,7 @@
   justify-self: flex-end;
   color: white;
   margin:5vh;
+  text-shadow: 1px 1px black;
 }
 .in-game .back{
   font-size: 3rem;

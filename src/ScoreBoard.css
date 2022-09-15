@@ -1,6 +1,9 @@
 .score-board{
   font-family: 'GoodBrush';
-  font-size: 5vh;
+  font-size: 1rem;
 }
 .scores{}
-.score-item{}
+.score-item{
+  display:flex;
+  justify-content: space-between;
+}

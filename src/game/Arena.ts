@@ -111,7 +111,7 @@ export default class Arena extends Phaser.Physics.Arcade.Sprite {
     this.mobs.remove(mob, true, false);
     mob.kill();
     if(this.mobs.getChildren().length === 0 && this.isWaveComplete ){
-      this.scene.events.emit(SceneEvents.WaveFinished);
+      this.scene.events.emit(SceneEvents.WaveFinished,this.scene.score);
     }
   }
   isMobValueCorrect(m:Mob):boolean{return false}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArenaType } from './game/Arena';
 import { SceneEvents } from './game/Events';
-import PhaserGame from './game/PhaserGame';
+import GameScene from './game/GameScene';
 import ScoreBoard from './ScoreBoard';
 import './Splash.css';
 import StorageService from './StorageService';
@@ -9,13 +9,12 @@ import StorageService from './StorageService';
 export class Splash extends React.Component {
   state: Readonly<{
     mode: ArenaType|null,
-    currentScore:number,
     isVisibleModeSelect : boolean,
     isVisibleStart : boolean,
     isVisibleScores: boolean,
   }>;  
   props: {
-    game: PhaserGame|null,
+    scene: GameScene|null,
     onModeSelected: (type: string) => void;
   };
   constructor(props) {
@@ -24,13 +23,12 @@ export class Splash extends React.Component {
       isVisibleModeSelect : false,
       isVisibleScores: false,
       isVisibleStart : true,
-      currentScore:0,
       mode: null,
     };
   }
   render() {
     return (
-      <div className="splash">
+      <div className={`splash ${!(this.state.isVisibleStart || this.state.isVisibleModeSelect || this.state.isVisibleScores) ? 'hidden':''}`}>
         <div className={`intro ${!this.state.isVisibleStart ? 'hidden':''}`}>
           <div className="intro__title">MIND SUMO</div>
           <button onClick={this.startModeSelect.bind(this)} className="button">
@@ -46,13 +44,13 @@ export class Splash extends React.Component {
               onClick={(e) => this.onModeSelect(ArenaType.Multiply)}>Multiply</button>
           </div>
         )}
-        {this.state.isVisibleScores && (
-        <div className="score-screen">
-          <p className="score-screen__score">Your Score: {this.state.currentScore}</p>
+        <div className={`score-screen ${this.state.isVisibleScores ? '' : 'hidden'}`}>
+          <div className="score-screen__scores">
+          <p className="score-screen__score">Score: {this.props.scene?.score}</p>
           <ScoreBoard/>
-          <button className="button"> select mode</button>
+          </div>
+          <button className="button" onClick={this.showModeSelect.bind(this)}> new game</button>
         </div>
-      )}
 
       </div>
     );
@@ -60,7 +58,14 @@ export class Splash extends React.Component {
   startModeSelect() {
     this.setState({
       isVisibleModeSelect: true,
-      isVisibleStart: false
+      isVisibleStart: false,
+      isVisibleScored:false
+    })
+  }
+  showModeSelect(){
+    this.setState({
+      isVisibleModeSelect:true,
+      isVisibleScores:false
     })
   }
   onModeSelect(type: ArenaType) {
@@ -76,23 +81,21 @@ export class Splash extends React.Component {
           mode:type,
           isVisibleModeSelect: false,
         })
-        this.props.game?.gameScene.startMode(type);
+        this.props.scene?.startMode(type);
 
   }
   componentDidUpdate(prevProps){
-    console.log('update',prevProps)
-    if(prevProps.game && prevProps.game !== this.props.game){
-  
-      this.props.game?.gameScene?.events.on(SceneEvents.WaveFinished,this.onWaveFinished.bind(this))
+    if(this.props.scene && prevProps.scene !== this.props.scene){
+      this.props.scene?.events.on(SceneEvents.WaveFinished,this.onWaveFinished,this)
     }
   }
   onWaveFinished(score){
-    StorageService.saveScore(score); 
+    console.log('wave finished')
+    StorageService.saveScore(this.props.scene?.score); 
     this.setState({
       isVisibleModeSelect:false,
       isVisibleScores:true,
-      isVisibleStart:false,
-      currentScore:score
+      isVisibleStart:false
     })
   }
   resume(){

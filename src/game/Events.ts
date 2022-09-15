@@ -6,3 +6,6 @@ export enum SceneEvents{
   WaveFinished='waveFinish',
   WaveStarted='waveStart'
 }
+export enum GameEvents{
+  sceneReady='sceneReady',
+}

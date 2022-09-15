@@ -2,17 +2,20 @@ import Arena from "./Arena";
 import { Helper } from "./Helper";
 import { Mob } from "./Mob";
 
-export class ArenaColor extends Arena{
-  colors = ['R','G','B'];
-  correct:string[] = [];
+export class ArenaMultiply extends Arena{
+  correct:number[] = [];
 
   constructor(scene,interactionRadius,killRadius){
     super(scene,interactionRadius,killRadius);
-    this.correct.push(this.colors[Helper.randomIntFromInterval(0,this.colors.length-1)]);
-    this.instruction.setText('Value: \n'+this.correct.join(','))
+    this.correct.push(Helper.randomIntFromInterval(0,10));
+    this.instruction.setText('Multiples of: \n'+this.correct.join('x '))
   }
   isMobValueCorrect(m:Mob){
-    return this.correct.indexOf(m.value) > -1;
+    let correct = false;
+    for (const c of this.correct) {
+      correct = correct || c %m.value === 0;
+    }
+    return correct;
   }
   // spawnMob() {
   //   let mob = new Mob(this.scene,this.colors[Helper.randomIntFromInterval(0,this.colors.length-1)]);
@@ -26,7 +29,7 @@ export class ArenaColor extends Arena{
       delay: interval,// ms
       callback: (d)=>{
         console.log('wave spawn %',this.waveTimer.getOverallProgress());
-        let m = new Mob(this.scene,this.colors[Helper.randomIntFromInterval(0,this.colors.length-1)]);
+        let m = new Mob(this.scene,Helper.randomIntFromInterval(0,100));
         this.spawnMob(m);
         Phaser.Actions.PlaceOnCircle([m], circle,Phaser.Math.Between(0,360));
         
