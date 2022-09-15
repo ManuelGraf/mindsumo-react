@@ -32,7 +32,7 @@
   display:flex;
   position:relative;
   align-items: center;
-  /* justify-content: flex-start; */
+  justify-content: center;
   border:none;
   outline:none;
   background-color:transparent;

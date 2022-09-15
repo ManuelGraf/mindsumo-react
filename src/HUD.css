@@ -39,3 +39,20 @@
   font-size: 25vh;
   flex: 1 1 50%
 }
+
+.button{
+  cursor: pointer;
+  padding: 1vh 10vw 10vh;
+  font-family:'GoodBrush';
+  font-size: 8vh;
+  display:flex;
+  position:relative;
+  align-items: center;
+  justify-content: center;
+  border:none;
+  outline:none;
+  background-color:transparent;
+  background-size: 100% 100%;
+  background: url(../public/assets/images/btn.svg) top center no-repeat
+
+}

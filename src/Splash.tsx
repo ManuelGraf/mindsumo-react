@@ -49,7 +49,7 @@ export class Splash extends React.Component {
           <p className="score-screen__score">Score: {this.props.scene?.score}</p>
           <ScoreBoard/>
           </div>
-          <button className="button" onClick={this.showModeSelect.bind(this)}> new game</button>
+          <button className="button" onClick={this.showModeSelect.bind(this)}>new</button>
         </div>
 
       </div>
