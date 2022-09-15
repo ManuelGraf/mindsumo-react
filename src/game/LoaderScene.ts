@@ -29,7 +29,6 @@ export default class LoaderScene extends Phaser.Scene {
         height: 128,
       },
     });
-    this.load.svg('sumo-ani','./assets/images/sumo-ani.svg');
     this.load.svg({
       url: "./assets/images/sumo.svg",
       key: "sumo",
@@ -38,20 +37,6 @@ export default class LoaderScene extends Phaser.Scene {
         height: 128,
       },
     });
-    this.load.svg({
-      url: "./assets/images/sumo-ani.svg",
-      key: "sumo-ani",
-      svgConfig: {
-        width: 512,
-        height: 128,
-      },
-    })
-    // this.textures.on(Phaser.Textures.Events.ADD,(key,tex)=>{
-    //   console.log('added tex')
-    //   if(key==='sumo-ani'){
-    //     Parser.SpriteSheet(texture, 0, 0, 0, width, height, config);
-    //   }
-    // })
     this.load.image("paper", "./assets/images/paper.jpg");
     this.load.audio("oomph1", "./assets/audio/sumo-oomph-1.mp3");
     this.load.audio("oomph2", "./assets/audio/sumo-oomph-2.mp3");
@@ -70,6 +55,7 @@ export default class LoaderScene extends Phaser.Scene {
   }
 
   public create() {
+    
     this.scene.start("game");
     this.sound.play('music',{volume:0.2,loop:true})
   }

@@ -3,32 +3,30 @@ import { Mob } from "./Mob";
 import { SoundQueue } from "./SoundQueue";
 
 enum States {
-  PUSHING,
-  WALKING,
-  STANDING,
+  PUSHING='push',
+  WALKING='walk',
+  STANDING='stand',
 }
-
 export default class Sumo extends Phaser.Physics.Arcade.Sprite {
   public scene: GameScene;
-  weight = 1.5;
+  weight = 2;
   size = 128;
   texSize=128;
   hitSounds:SoundQueue
   public body:any;
 
   constructor(scene: GameScene, x: number, y: number) {
-    const texture = "sumo";
+    const texture = "sumo-ani";
 
     super(scene, x, y, texture);
     this.scene = scene;
     
     Object.entries({
-      pushing: { frameRate: 12, frames: [0, 1], repeat: -1 },
-      walking: { frameRate: 12, frames: [2, 3], repeat: -1 },
-      standing: { frames: [0] },
+      push: { frameRate: 12, frames: [0, 1], repeat: -1 },
+      walk: { frameRate: 12, frames: [2, 3], repeat: -1 },
+      stand: { frames: [0] },
     }).forEach(([key, data]) => {
       const { frameRate, frames, repeat } = data;
-
       this.scene.anims.create({
         key,
         frameRate,
@@ -45,8 +43,8 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
     .setAllowDrag(true)
     .setMaxVelocityX(180)
     .setMaxVelocityY(180)
-      .setDragX(Math.pow(25, 2))
-      .setDragY(Math.pow(25, 2));
+      .setDragX(Math.pow(20, 2))
+      .setDragY(Math.pow(20, 2));
       
       this.scene.add.existing(this)
       .setDisplaySize(this.size,this.size)
@@ -66,16 +64,7 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
   }
 
   public setState(value: States) {
-    switch (value) {
-      case States.PUSHING:
-        // this.setSize(24).setVelocityX(this.body.velocity.x * 0.5);
-        // .play("stand");
-        break;
-
-      case States.WALKING:
-        // this.setSize(24).play("walk");
-        break;
-    }
+    this.play(value)
 
     return super.setState(value);
   }
@@ -93,7 +82,7 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
     if(accelerationX > 0 || accelerationY > 0 ){
       this.setState(States.WALKING)
     }
-
+    console.log(this.state);
     super.preUpdate(time, delta);
   }
 

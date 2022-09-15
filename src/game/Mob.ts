@@ -21,14 +21,14 @@ export class Mob extends Phaser.Physics.Arcade.Sprite {
   constructor(scene: GameScene, value:any) {
     const texture = "btn-circle";
     const maxSize = 128;
-    const maxSpeed = 30;
-    const maxWeight = 1;
+    const maxSpeed = 20;
+    const maxWeight = 0.6;
     const minSize = 32;
     const minSpeed = 10;
-    const minWeight = 0.3;
+    const minWeight = 0.1;
     
     const size = Phaser.Math.Between(maxSize,minSize);
-    const speed = Phaser.Math.Interpolation.Linear([minSpeed,maxSpeed],maxSize/size);
+    const speed = Phaser.Math.Interpolation.Linear([maxSpeed,minSpeed],size/maxSize);
     const weight = Phaser.Math.Interpolation.Linear([minWeight,maxWeight],size/maxSize)
     
     super(scene,size/2,size/2, texture);

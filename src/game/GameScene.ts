@@ -21,6 +21,11 @@ export default class GameScene extends Phaser.Scene {
     });
   }
   public create() {
+    const tex = this.textures.get('sumo-ani');
+    // @ts-ignore
+    Phaser.Textures.Parsers.SpriteSheet(tex, 0, 0, 0, 512, 128, { frameWidth: 128 });
+
+
     this.game.events.emit(GameEvents.sceneReady,this);
 
     this._inputs = new Inputs(this);
@@ -39,11 +44,21 @@ export default class GameScene extends Phaser.Scene {
     this.events.on(SceneEvents.Leak,this.onLeaked,this)
     this.events.on(SceneEvents.WaveFinished,this.onWaveFinished,this)
     this.events.once('shutdown',this.onShutDown,this)
+
     
     // this.cameras.main.setBounds(0, 0, widthInPixels, heightInPixels);
     // this.cameras.main.startFollow(mario, true);
   }
   public preload() {
+    this.load.svg({
+      url: "./assets/images/sumo-ani.svg",
+      key: "sumo-ani",
+      svgConfig: {
+        width: 512,
+        height: 128,
+      },
+    })
+
     // this.load.plugin(
     //   "rexpolarcoordinateplugin",
     //   "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexpolarcoordinateplugin.min.js",
