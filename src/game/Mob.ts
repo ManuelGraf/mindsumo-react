@@ -2,8 +2,8 @@ import GameScene from "./GameScene";
 import { Helper } from "./Helper";
 
 export enum MobType {
-  "color",
-  "number",
+  COLOR="color",
+  CHAR="number",
 }
 export class Mob extends Phaser.Physics.Arcade.Sprite {
   weight;
@@ -18,7 +18,7 @@ export class Mob extends Phaser.Physics.Arcade.Sprite {
   public body: Phaser.Physics.Arcade.Body;
   public container:Phaser.GameObjects.Container;
   
-  constructor(scene: GameScene, value:any) {
+  constructor(scene: GameScene, value:any,type:MobType=MobType.CHAR) {
     const texture = "btn-circle";
     const maxSize = 128;
     const maxSpeed = 20;
@@ -34,14 +34,22 @@ export class Mob extends Phaser.Physics.Arcade.Sprite {
     super(scene,size/2,size/2, texture);
     this.scene = scene;
     this.value = value;
+    this.type = type;
     this.speed = speed;
     this.weight = weight;
     this.size = size;
+    let color = '#000';
+    let label = this.value;
+    
+    if(this.type === MobType.COLOR){
+      color = this.value;
+      label = '⬤'
+    }
     //@TOO follow
-    this.label = this.scene.add.text(this.x -this.size/2, this.y-this.size/2, this.value, {
+    this.label = this.scene.add.text(this.x -this.size/2, this.y-this.size/2, label, {
       fontFamily: "GoodBrush",
-      fontSize: this.size+"px",
-      color: "#000",
+      fontSize: size/2+"px",
+      color,
       align: "left",
     });
     this.label.setOrigin(0.5)

@@ -12,8 +12,10 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
   weight = 2;
   size = 128;
   texSize=128;
+  pushDuration=500; //ms
   hitSounds:SoundQueue
   public body:any;
+  pushUntil=0;
 
   constructor(scene: GameScene, x: number, y: number) {
     const texture = "sumo-ani";
@@ -81,12 +83,13 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
     this.setFlipX(flipX)
     .setAccelerationX(accelerationX)
     .setAccelerationY(accelerationY);
-    if(left || right || down || up ){
+    if(this.pushUntil > time){
+      this.setState(States.PUSHING)
+    }else if(left || right || down || up ){
       this.setState(States.WALKING)
     }else{
       this.setState(States.STANDING)
     }
-    console.log(this.state);
     super.preUpdate(time, delta);
   }
 
@@ -106,7 +109,7 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
     return this;
   }
   onMobCollided(mob: Mob) {
-    this.setState(States.PUSHING)
+    this.pushUntil = this.scene.time.now+this.pushDuration;
     mob.stun(1)
     this.hitSounds.play();
   }

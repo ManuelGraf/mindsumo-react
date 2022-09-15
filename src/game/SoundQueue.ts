@@ -10,6 +10,6 @@ export class SoundQueue{
     this.keys=this.keys.concat(keys);
   }
   play(){
-    this.audio.play(this.keys[Helper.randomIntFromInterval(0,this.keys.length-1)],{ volume: 0.5 })
+    this.audio.play(this.keys[Helper.randomIntFromInterval(0,this.keys.length-1)],{ volume: 0.2 })
   }
 }
