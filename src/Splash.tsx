@@ -9,6 +9,7 @@ import StorageService from './StorageService';
 export class Splash extends React.Component {
   state: Readonly<{
     mode: ArenaType|null,
+    highscores,
     isVisibleModeSelect : boolean,
     isVisibleStart : boolean,
     isVisibleScores: boolean,
@@ -23,6 +24,7 @@ export class Splash extends React.Component {
       isVisibleModeSelect : false,
       isVisibleScores: false,
       isVisibleStart : true,
+      highscores: StorageService.getHighScores(50),
       mode: null,
     };
   }
@@ -33,6 +35,9 @@ export class Splash extends React.Component {
           <div className="intro__title">MIND SUMO</div>
           <button onClick={this.startModeSelect.bind(this)} className="button">
             START
+          </button>
+          <button onClick={this.showScores.bind(this)} className="button">
+            scores
           </button>
         </div>
         {this.state.isVisibleModeSelect && (
@@ -47,9 +52,9 @@ export class Splash extends React.Component {
         <div className={`score-screen ${this.state.isVisibleScores ? '' : 'hidden'}`}>
           <div className="score-screen__scores">
           <p className="score-screen__score">Score: {this.props.scene?.score}</p>
-          <ScoreBoard/>
+          <ScoreBoard scores={this.state.highscores}/>
           </div>
-          <button className="button" onClick={this.showModeSelect.bind(this)}>new</button>
+          <button className="button" onClick={this.startModeSelect.bind(this)}>new</button>
         </div>
 
       </div>
@@ -59,13 +64,14 @@ export class Splash extends React.Component {
     this.setState({
       isVisibleModeSelect: true,
       isVisibleStart: false,
-      isVisibleScored:false
+      isVisibleScores:false
     })
   }
-  showModeSelect(){
+  showScores(){
     this.setState({
-      isVisibleModeSelect:true,
-      isVisibleScores:false
+      isVisibleModeSelect:false,
+      isVisibleStart: false,
+      isVisibleScores:true
     })
   }
   onModeSelect(type: ArenaType) {
