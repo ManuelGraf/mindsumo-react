@@ -22,18 +22,23 @@ export default class Arena extends Phaser.Physics.Arcade.Sprite {
   currentScore:number =0;
   isWaveComplete=false;
   waveTimer:Phaser.Time.TimerEvent;
+  center:{x:number,y:number}
 
  
   pool: Mob[] = [];
 
   constructor(scene: GameScene, interactionRadius:number, killRadius:number) {
     const texture = "arena";
-    super(scene, killRadius, killRadius, texture);
+    const dim = Helper.screenDimensions;
+    const center = {x: dim.x/2, y:dim.y/2}
+    super(scene, center.x, center.y, texture);
+    this.center = center;
     this.scene= scene;
     this.mobs = new Phaser.GameObjects.Group(scene);
-    this.setOrigin(0.5);
+    
+
     this.arenaBg = this.scene.add
-      .image(killRadius, killRadius, "arena")
+      .image(center.x, center.y, "arena")
       .setOrigin(0.5)
       //   .setSize(diameter, diameter)
       .setDisplaySize(killRadius * 2, killRadius * 2);
@@ -48,6 +53,7 @@ export default class Arena extends Phaser.Physics.Arcade.Sprite {
     
     this.scene.add
     .existing(this)
+    .setOrigin(0.5)
     .setDisplaySize(this.interactionRadius * 2, this.interactionRadius * 2);
     this.instruction = this.scene.add.text(this.x, this.y, this.label, {
       fontFamily: "GoodBrush",

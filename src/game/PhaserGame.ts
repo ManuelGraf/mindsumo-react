@@ -3,7 +3,8 @@ import GameScene from './GameScene';
 import LoaderScene from './LoaderScene';
 
 export class PhaserGame extends Phaser.Game{
-  constructor(){
+  constructor(parent){
+    console.log('create game in',parent)
     const config: Phaser.Types.Core.GameConfig = {
       type: Phaser.AUTO,
       zoom: 1,
@@ -11,7 +12,11 @@ export class PhaserGame extends Phaser.Game{
       input: {
         keyboard: true,
         gamepad: true,
+        mouse:true,
+        touch:true,
       },
+      transparent:true,
+      parent,
       scale: {
         mode: Phaser.Scale.RESIZE,
         min: {

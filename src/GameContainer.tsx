@@ -10,21 +10,21 @@ export interface GameContainerState{
 
 export class GameContainer extends React.Component<GameContainerProps,GameContainerState>{
   game:PhaserGame;
+  gameContainer;
   constructor(props){
     super(props);
-    console.log('make game');
-    this.state = {
-      game:new PhaserGame()
-    }
+    this.gameContainer = React.createRef();
   }
   render(){
-    return <div id="game"></div>
+    return <div id="game" ref={this.gameContainer}></div>
   }
   componentDidMount(){
-    if(this.state.game){
-      console.log('game container mounted')
-      this.props.gameDidStart(this.state.game);
-    }
+    console.log('make game in', this.gameContainer.current);
+    const game = new PhaserGame(this.gameContainer.current);
+    this.setState({
+      game
+    })
+    this.props.gameDidStart(game);
   }
   componentWillUnmount(){
     console.log('destroy game')
