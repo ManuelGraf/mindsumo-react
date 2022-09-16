@@ -55,8 +55,7 @@ export default class LoaderScene extends Phaser.Scene {
   }
 
   public create() {
-    
     this.scene.start("game");
-    this.sound.play('music',{volume:0.2,loop:true})
+    this.sound.play("music", { volume: 0.2, loop: true });
   }
 }

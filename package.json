@@ -3,7 +3,7 @@
   "description": "A Browser Game",
   "version": "0.9.0",
   "private": true,
-  "homepage": "https://manuelgraf.com/demo/mindsumo",
+  "homepage": "/demo/mindsumo",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",

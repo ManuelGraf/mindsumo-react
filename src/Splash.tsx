@@ -8,30 +8,30 @@ import StorageService from './StorageService';
 
 export class Splash extends React.Component {
   state: Readonly<{
-    mode: ArenaType|null,
+    mode: ArenaType | null,
     highscores,
-    isVisibleModeSelect : boolean,
-    isVisibleStart : boolean,
+    isVisibleModeSelect: boolean,
+    isVisibleStart: boolean,
     isVisibleScores: boolean,
-  }>;  
+  }>;
   props: {
-    scene: GameScene|null,
+    scene: GameScene | null,
     onModeSelected: (type: string) => void;
   };
   constructor(props) {
     super(props);
     this.state = {
-      isVisibleModeSelect : false,
+      isVisibleModeSelect: false,
       isVisibleScores: false,
-      isVisibleStart : true,
+      isVisibleStart: true,
       highscores: StorageService.getHighScores(50),
       mode: null,
     };
   }
   render() {
     return (
-      <div className={`splash ${!(this.state.isVisibleStart || this.state.isVisibleModeSelect || this.state.isVisibleScores) ? 'hidden':''}`}>
-        <div className={`intro ${!this.state.isVisibleStart ? 'hidden':''}`}>
+      <div className={`splash ${!(this.state.isVisibleStart || this.state.isVisibleModeSelect || this.state.isVisibleScores) ? 'hidden' : ''}`}>
+        <div className={`intro ${!this.state.isVisibleStart ? 'hidden' : ''}`}>
           <div className="intro__title">MIND SUMO</div>
           <button onClick={this.startModeSelect.bind(this)} className="button">
             START
@@ -51,8 +51,8 @@ export class Splash extends React.Component {
         )}
         <div className={`score-screen ${this.state.isVisibleScores ? '' : 'hidden'}`}>
           <div className="score-screen__scores">
-          <p className="score-screen__score">Score: {this.props.scene?.score}</p>
-          <ScoreBoard scores={this.state.highscores}/>
+            {this.props.scene?.score && (<p className="score-screen__score">Score: {this.props.scene?.score}</p>)}
+            <ScoreBoard scores={this.state.highscores} />
           </div>
           <button className="button" onClick={this.startModeSelect.bind(this)}>new</button>
         </div>
@@ -64,51 +64,51 @@ export class Splash extends React.Component {
     this.setState({
       isVisibleModeSelect: true,
       isVisibleStart: false,
-      isVisibleScores:false
+      isVisibleScores: false
     })
   }
-  showScores(){
+  showScores() {
     this.setState({
-      isVisibleModeSelect:false,
+      isVisibleModeSelect: false,
       isVisibleStart: false,
-      isVisibleScores:true
+      isVisibleScores: true
     })
   }
   onModeSelect(type: ArenaType) {
-    this.setState({score:0});
+    this.setState({ score: 0 });
     switch (type) {
       case ArenaType.Color:
         break;
-        case ArenaType.Multiply:
-          break;
-        }
-        this.props.onModeSelected(type);
-        this.setState({
-          mode:type,
-          isVisibleModeSelect: false,
-        })
-        this.props.scene?.startMode(type,50);
+      case ArenaType.Multiply:
+        break;
+    }
+    this.props.onModeSelected(type);
+    this.setState({
+      mode: type,
+      isVisibleModeSelect: false,
+    })
+    this.props.scene?.startMode(type, 50);
 
   }
-  componentDidUpdate(prevProps){
-    if(this.props.scene && prevProps.scene !== this.props.scene){
-      this.props.scene?.events.on(SceneEvents.WaveFinished,this.onWaveFinished,this)
+  componentDidUpdate(prevProps) {
+    if (this.props.scene && prevProps.scene !== this.props.scene) {
+      this.props.scene?.events.on(SceneEvents.WaveFinished, this.onWaveFinished, this)
     }
   }
-  onWaveFinished(score){
+  onWaveFinished(score) {
     console.log('wave finished')
-    StorageService.saveScore(this.props.scene?.score); 
+    StorageService.saveScore(this.props.scene?.score);
     this.setState({
-      isVisibleModeSelect:false,
-      isVisibleScores:true,
-      isVisibleStart:false
+      isVisibleModeSelect: false,
+      isVisibleScores: true,
+      isVisibleStart: false
     })
   }
-  resume(){
+  resume() {
     this.setState({
-      isVisibleModeSelect:true,
-      isVisibleScores:false,
-      isVisibleStart:false,
+      isVisibleModeSelect: true,
+      isVisibleScores: false,
+      isVisibleStart: false,
     })
   }
 }

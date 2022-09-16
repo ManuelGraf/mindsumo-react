@@ -1,5 +1,4 @@
 export abstract class Helper {
-
   public static get screenDimensions() {
     var win = window,
       doc = document,
@@ -21,7 +20,8 @@ export abstract class Helper {
   public static isLinuxFirefox(): boolean {
     // because it crash in soundManager
     let is_linux = /Linux/.test(window.navigator.platform);
-    let is_firefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
-    return (is_firefox && is_linux);
+    let is_firefox = navigator.userAgent.toLowerCase().indexOf("firefox") > -1;
+    return is_firefox && is_linux;
   }
 }
+(window as any).helper = Helper;

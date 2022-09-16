@@ -1,10 +1,14 @@
-import Phaser from 'phaser';
-import GameScene from './GameScene';
-import LoaderScene from './LoaderScene';
+import Phaser from "phaser";
+import GameScene from "./GameScene";
+import { Helper } from "./Helper";
+import LoaderScene from "./LoaderScene";
 
-export class PhaserGame extends Phaser.Game{
-  constructor(parent){
-    console.log('create game in',parent)
+export class PhaserGame extends Phaser.Game {
+  constructor(parent) {
+    console.log("create game in", parent);
+    const dim = Helper.screenDimensions;
+    const min = Math.min(dim.x, dim.y);
+
     const config: Phaser.Types.Core.GameConfig = {
       type: Phaser.AUTO,
       zoom: 1,
@@ -12,20 +16,20 @@ export class PhaserGame extends Phaser.Game{
       input: {
         keyboard: true,
         gamepad: true,
-        mouse:true,
-        touch:true,
+        mouse: true,
+        touch: true,
       },
-      transparent:true,
+      transparent: true,
       parent,
       scale: {
         mode: Phaser.Scale.RESIZE,
         min: {
-          width: 600,
-          height: 600,
+          width: min,
+          height: min,
         },
         max: {
           width: 4096,
-          height: 2600,
+          height: 4096,
         },
       },
       render: {
@@ -41,16 +45,14 @@ export class PhaserGame extends Phaser.Game{
       },
       scene: [LoaderScene, GameScene],
     };
-    
+
     super(config);
   }
-  onSceneReady(){
-    return new Promise((resolve,reject)=>{
-
-    })
+  onSceneReady() {
+    return new Promise((resolve, reject) => {});
   }
-  get gameScene():GameScene{
-    return this.scene.keys.game as GameScene
+  get gameScene(): GameScene {
+    return this.scene.keys.game as GameScene;
   }
 }
 export default PhaserGame;
