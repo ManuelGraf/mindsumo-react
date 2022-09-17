@@ -22,7 +22,7 @@ export class ArenaMultiply extends Arena{
   // }
   startWave(count,interval){
     this.isWaveComplete = false;
-    const circle = new Phaser.Geom.Circle(this.killRadius, this.killRadius*0.9,this.killRadius*0.9);
+    const circle = new Phaser.Geom.Circle(this.center.x, this.center.y,this.killRadius*0.9);
     this.waveTimer = this.scene.time.addEvent({
       delay: interval,// ms
       callback: (d)=>{

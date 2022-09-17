@@ -172,13 +172,14 @@ export default class Arena extends Phaser.Physics.Arcade.Sprite {
     });
   }
   public destroy(fromScene?: boolean | undefined): void {
-      super.destroy(fromScene);
-      this.waveTimer.remove();
-
-      this.arenaBg.destroy();
-      this.instruction.destroy();
-      // this.scene.events.off("update", () => {
+    this.waveTimer.remove();
+    this.mobs.clear();
+    
+    this.arenaBg.destroy();
+    this.instruction.destroy();
+    // this.scene.events.off("update", () => {
       //   this.checkMobs();
       // });
+      super.destroy(fromScene);
   }
 }
