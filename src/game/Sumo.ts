@@ -17,11 +17,12 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
   public body:any;
   pushUntil=0;
 
-  constructor(scene: GameScene, x: number, y: number) {
+  constructor(scene: GameScene,size, x: number, y: number) {
     const texture = "sumo-ani";
 
     super(scene, x, y, texture);
     this.scene = scene;
+    this.size = size;
     
     Object.entries({
       push: { frameRate: 6, frames: [0, 1], repeat: -1 },

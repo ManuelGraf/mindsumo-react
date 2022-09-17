@@ -27,13 +27,9 @@ export class HUD extends React.Component<HUDProps,HUDState>{
 
   render(){
     return (<div className="hud" id="hud">
-      {!this.state.finished && (
-        <div className="in-game">
           <button onClick={this.back.bind(this)} className="button">BACK</button>
           <span className="score">Wave: {this.props.scene?.mobCount}</span>
           <span className="score">Score: {this.props.scene?.score}</span>
-        </div>
-      )}
     </div>)
   }
   back(){

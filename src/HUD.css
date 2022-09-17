@@ -4,22 +4,21 @@
   top:0;
   left:0;
 }
-.in-game{
+.hud{
   display:flex;
   justify-content: space-between;
   align-items: center;
   font-size: 3rem;
   font-family: 'GoodBrush';
-  
 }
 
-.in-game .score{
+.hud .score{
   justify-self: flex-end;
   color: white;
   margin:5vh;
   text-shadow: 1px 1px black;
 }
-.in-game .back{
+.hud .back{
   font-size: 3rem;
   margin:5vh;
   font-family: 'GoodBrush';
@@ -40,19 +39,14 @@
   flex: 1 1 50%
 }
 
-.button{
-  cursor: pointer;
-  padding: 1vh 10vw 10vh;
-  font-family:'GoodBrush';
-  font-size: 8vh;
-  display:flex;
-  position:relative;
-  align-items: center;
-  justify-content: center;
-  border:none;
-  outline:none;
-  background-color:transparent;
-  background-size: 100% 100%;
-  background: url(../public/assets/images/btn.svg) top center no-repeat
 
+@media only screen and (max-width: 600px) {
+  .hud .button{
+    font-size: 5vw;
+
+  }
+  body .hud .score{
+    font-size: 5vw;
+  }
+  
 }

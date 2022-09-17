@@ -4,7 +4,6 @@ import { GameEvents } from './game/Events';
 import GameScene from './game/GameScene';
 import PhaserGame from './game/PhaserGame';
 import { GameContainer } from './GameContainer';
-import HUD from './HUD';
 import { Splash } from './Splash';
 class App extends React.Component {
   state: {
@@ -27,9 +26,6 @@ class App extends React.Component {
   render() {
     return(
       <div className='mindsumo-app'>
-          <div className={(this.state.game && this.state.activeMode ? "": "hidden")}>
-            <HUD scene={this.state.scene} onBack={this.back.bind(this)}></HUD>
-          </div>
         <Splash scene={this.state.scene} onModeSelected={this.onModeSelected.bind(this)}></Splash>
         <GameContainer gameDidStart={this.onGameStarted.bind(this)} ></GameContainer>
       </div>

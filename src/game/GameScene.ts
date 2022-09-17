@@ -31,8 +31,10 @@ export default class GameScene extends Phaser.Scene {
     this._inputs = new Inputs(this);
 
     let dim = Helper.screenDimensions;
+    const size = Math.min(dim.x, dim.y);
     
-    this.sumo = new Sumo(this, dim.x/2, dim.y/2);
+    // sumo cannot be bigger than arena center
+    this.sumo = new Sumo(this,Math.floor(size/10), dim.x/2, dim.y/2);
 
     this.physics.world.setBounds(
       0,0,
@@ -84,13 +86,15 @@ export default class GameScene extends Phaser.Scene {
     this.mobCount = count;
     let dim = Helper.screenDimensions;
     const size = Math.min(dim.x, dim.y);
+    const killRadius =  size/10;
+    const leakRadius =  size/2
 
     switch(mode){
       case ArenaType.Color:
-        this.arena = new ArenaColor(this, size / 10, size / 2);
+        this.arena = new ArenaColor(this, killRadius, leakRadius);
         break;
       case ArenaType.Multiply:
-        this.arena = new ArenaMultiply(this, size / 10, size / 2);
+        this.arena = new ArenaMultiply(this, killRadius, leakRadius);
         break;
       }
       this.sumo.setDepth(100);
