@@ -20,28 +20,36 @@ export default class Inputs {
   private _scene: Phaser.Scene;
   private _keys: Keys;
   private _padIndex: number = 0;
+  private _pointer:Phaser.Input.Pointer;
 
   constructor(scene: Phaser.Scene) {
     this._scene = scene;
     this._keys = this._scene.input.keyboard.addKeys(
       "W,A,S,D,Z,X,C,up,left,down,right,space,enter,comma,period"
     ) as Keys;
+    this._pointer = this._scene.input.activePointer;
   }
 
   public get keys(): Keys {
     return this._keys;
   }
 
+  public get pointed(){
+    return this._pointer.isDown
+  }
+  public get pointedAt(){
+    return {x:this._pointer.worldX,y:this._pointer.worldY}
+  }
   public get left(): boolean {
-    return this.keys.left.isDown || this.keys.A.isDown || this.padAxisH === -1;
+    return this.keys.left.isDown || this.keys.A.isDown || this.padAxisH === -1 ;
   }
 
   public get right(): boolean {
-    return this.keys.right.isDown || this.keys.D.isDown || this.padAxisH === 1;
+    return this.keys.right.isDown || this.keys.D.isDown || this.padAxisH === 1 ;
   }
 
   public get up(): boolean {
-    return this.keys.up.isDown || this.keys.W.isDown || this.padAxisV === -1;
+    return this.keys.up.isDown || this.keys.W.isDown || this.padAxisV === -1 ;
   }
 
   public get down(): boolean {

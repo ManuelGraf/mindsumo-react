@@ -1,4 +1,5 @@
 import GameScene from "./GameScene";
+import { Helper } from "./Helper";
 import { Mob } from "./Mob";
 import { SoundQueue } from "./SoundQueue";
 
@@ -11,6 +12,7 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
   public scene: GameScene;
   weight = 2;
   size = 128;
+  maxSpeed = 180;
   texSize=128;
   pushDuration=500; //ms
   hitSounds:SoundQueue
@@ -44,8 +46,8 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
     .setCircle(this.texSize/2)
     .setMass(this.weight)
     .setAllowDrag(true)
-    .setMaxVelocityX(180)
-    .setMaxVelocityY(180)
+    .setMaxVelocityX(this.maxSpeed)
+    .setMaxVelocityY(this.maxSpeed)
       .setDragX(Math.pow(20, 2))
       .setDragY(Math.pow(20, 2));
       
@@ -61,9 +63,7 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
       });
     });
     this.hitSounds= new SoundQueue(this.scene.sound);
-    this.hitSounds.set(['oomph1','oomph2','oomph3']);
-    
-    
+    this.hitSounds.set(['oomph1','oomph2','oomph3']);    
   }
 
   public setState(value: States) {
@@ -75,7 +75,7 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
   }
 
   public preUpdate(time: number, delta: number) {
-    const { left, right, down, up } = this.scene.inputs;
+    const { left, right, down, up, pointed,pointedAt } = this.scene.inputs;
     const flipX = left && !right ? true : right ? false : this.flipX;
     const directionX = -Number(left) + Number(right);
     const directionY = -Number(up) + Number(down);
@@ -84,6 +84,11 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
     this.setFlipX(flipX)
     .setAccelerationX(accelerationX)
     .setAccelerationY(accelerationY);
+    if(pointed){
+      console.log('point',pointedAt)
+      let delta = Helper.vectorBetween(pointedAt, this).scale(this.maxSpeed/2);
+      this.setVelocity(delta.x, delta.y);
+    }
     if(this.pushUntil > time){
       this.setState(States.PUSHING)
     }else if(left || right || down || up ){
@@ -91,6 +96,8 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
     }else{
       this.setState(States.STANDING)
     }
+
+
     super.preUpdate(time, delta);
   }
 

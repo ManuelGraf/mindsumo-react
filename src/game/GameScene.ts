@@ -68,7 +68,6 @@ export default class GameScene extends Phaser.Scene {
     // );
     // this.objects = {};
   }
-
   onScored(){
     console.log('scene scored')
     this.score++;
@@ -101,16 +100,15 @@ export default class GameScene extends Phaser.Scene {
       this.arena.startWave(count,5000);
       this.events.emit(SceneEvents.WaveStarted,{count,mode});
   }
-
   clear(){
     this.events.emit('clearScore');
     this.arena.destroy(true);
   }
   onShutDown(){
     console.log('shutdown')
-    this.events.off(SceneEvents.Score,this.onScored);
-    this.events.off(SceneEvents.Leak,this.onLeaked);
-    this.events.off(SceneEvents.WaveFinished,this.onWaveFinished);
+    this.events.off(SceneEvents.Score, this.onScored);
+    this.events.off(SceneEvents.Leak, this.onLeaked);
+    this.events.off(SceneEvents.WaveFinished, this.onWaveFinished);
   }
   
   onWaveFinished(){
