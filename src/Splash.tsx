@@ -85,6 +85,7 @@ export class Splash extends React.Component {
   }
   onBack(){
     this.startModeSelect();
+    this.props.scene?.clear();
   }
   onModeSelect(type: ArenaType) {
     this.setState({ score: 0 });
