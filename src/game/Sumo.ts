@@ -85,12 +85,15 @@ export default class Sumo extends Phaser.Physics.Arcade.Sprite {
     .setAccelerationX(accelerationX)
     .setAccelerationY(accelerationY);
     if(pointed){
-      let delta = Helper.vectorBetween(pointedAt, this).scale(this.maxSpeed);
+      // console.log('pointed ',pointed,pointedAt)
+      let delta = Helper.vectorBetween(pointedAt, this).scale(this.maxSpeed/2);
+      // this.setAccelerationX(delta.x);
+      // this.setAccelerationY(delta.y);
       this.setVelocity(delta.x, delta.y);
     }
     if(this.pushUntil > time){
       this.setState(States.PUSHING)
-    }else if(left || right || down || up ){
+    }else if( this.body.newVelocity.x !== 0 || this.body.newVelocity.y !== 0  ){
       this.setState(States.WALKING)
     }else{
       this.setState(States.STANDING)

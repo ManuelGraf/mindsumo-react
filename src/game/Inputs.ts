@@ -27,11 +27,7 @@ export default class Inputs {
     this._keys = this._scene.input.keyboard.addKeys(
       "W,A,S,D,Z,X,C,up,left,down,right,space,enter,comma,period"
     ) as Keys;
-    this._pointer = this._scene.input.activePointer;
-  }
-
-  public get keys(): Keys {
-    return this._keys;
+    this._pointer = this._scene.input.pointer1;
   }
 
   public get pointed(){
@@ -39,6 +35,9 @@ export default class Inputs {
   }
   public get pointedAt(){
     return {x:this._pointer.worldX,y:this._pointer.worldY}
+  }
+  public get keys(): Keys {
+    return this._keys;
   }
   public get left(): boolean {
     return this.keys.left.isDown || this.keys.A.isDown || this.padAxisH === -1 ;
