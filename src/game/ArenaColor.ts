@@ -28,11 +28,13 @@ export class ArenaColor extends Arena{
   startWave(count,interval){
     this.isWaveComplete = false;
     const circle = new Phaser.Geom.Circle(this.center.x, this.center.y,this.killRadius*0.9);
+    const maxSize = this.interactionRadius*2;
+    const minSize = this.interactionRadius;
     this.waveTimer = this.scene.time.addEvent({
       delay: interval,// ms
       callback: (d)=>{
         console.log('wave spawn %',this.waveTimer.getOverallProgress());
-        let m = new Mob(this.scene,this.colors[Helper.randomIntFromInterval(0,this.colors.length-1)],MobType.COLOR);
+        let m = new Mob(this.scene,this.colors[Helper.randomIntFromInterval(0,this.colors.length-1)],maxSize,minSize,MobType.COLOR);
         this.spawnMob(m);
         Phaser.Actions.PlaceOnCircle([m], circle,Phaser.Math.Between(0,360));
         

@@ -23,11 +23,13 @@ export class ArenaMultiply extends Arena{
   startWave(count,interval){
     this.isWaveComplete = false;
     const circle = new Phaser.Geom.Circle(this.center.x, this.center.y,this.killRadius*0.9);
+    const maxSize = this.interactionRadius*2;
+    const minSize = this.interactionRadius;
     this.waveTimer = this.scene.time.addEvent({
       delay: interval,// ms
       callback: (d)=>{
         console.log('wave spawn %',this.waveTimer.getOverallProgress());
-        let m = new Mob(this.scene,Helper.randomIntFromInterval(0,100));
+        let m = new Mob(this.scene,Helper.randomIntFromInterval(0,100),maxSize,minSize);
         this.spawnMob(m);
         Phaser.Actions.PlaceOnCircle([m], circle,Phaser.Math.Between(0,360));
         

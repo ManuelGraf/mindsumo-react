@@ -11,6 +11,7 @@ export class Mob extends Phaser.Physics.Arcade.Sprite {
   size;
   stunned = false;
   stunUntil = 0;
+  texSize = 128;
   public value:any;
   public label;
   
@@ -18,12 +19,12 @@ export class Mob extends Phaser.Physics.Arcade.Sprite {
   public body: Phaser.Physics.Arcade.Body;
   public container:Phaser.GameObjects.Container;
   
-  constructor(scene: GameScene, value:any,type:MobType=MobType.CHAR) {
+  constructor(scene: GameScene, value:any,max=128,min=32,type:MobType=MobType.CHAR) {
     const texture = "btn-circle";
-    const maxSize = 128;
+    const maxSize = max;
     const maxSpeed = 20;
     const maxWeight = 0.6;
-    const minSize = 32;
+    const minSize = min;
     const minSpeed = 10;
     const minWeight = 0.1;
     
@@ -58,7 +59,7 @@ export class Mob extends Phaser.Physics.Arcade.Sprite {
     this.scene.physics.world.enable(this);
     // .setOrigin(0.5)
     this.body
-      .setCircle(maxSize/2)
+      .setCircle(this.texSize/2)
       .setMass(this.weight)
       .setBounce(1,1)
       .setAllowDrag(true)
